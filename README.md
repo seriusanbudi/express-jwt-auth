@@ -22,8 +22,8 @@ Start the development server by running the following command:
 
 Hit the `/auth/sign-in` endpoint using your preferred tool (e.g., Postman or curl) with an available user from the `db.js` file. This API call will provide you with a JWT token. Replace `<email>` and `<password>` with the actual email and password of the user from the `db.js` file:
 
-POST http://localhost:3000/auth/sign-in<br/>
-Body:
+**POST** http://localhost:3000/auth/sign-in<br/>
+**Body:**
 
 ```javascript
 {
@@ -38,8 +38,8 @@ This will return a JWT token in the response.
 
 Now, you can test if the JWT token is working by making an authenticated request to the `/me` endpoint. Set the JWT token as the Authorization header in the request. Replace `<your_token>` with the JWT token obtained in Step 3:
 
-GET http://localhost:3000/me<br/>
-Headers:<br/>
+**GET** http://localhost:3000/me<br/>
+**Headers:**
 
 ```javascript
 Authorization: Bearer <your_token>
