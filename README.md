@@ -10,7 +10,7 @@ Open your terminal and run the following command to install the required depende
 
 ## Step 2: Setup ENV
 
-Copy the `.env.example` file to `.env`. You can change the value under `JWT_SECRET`
+Copy the `.env.example` file to `.env`. You can modify the value if needed
 
 ## Step 3: Start the Development Server
 
@@ -32,11 +32,11 @@ Hit the `/auth/sign-in` endpoint using your preferred tool (e.g., Postman or cur
 }
 ```
 
-This will return a JWT token in the response.
+This will return a access token and refresh token in the response.
 
 ## Step 5: Test the Token
 
-Now, you can test if the JWT token is working by making an authenticated request to the `/me` endpoint. Set the JWT token as the Authorization header in the request. Replace `<your_token>` with the JWT token obtained in Step 3:
+Now, you can test if the access token is working by making an authenticated request to the `/me` endpoint. Set the JWT token as the Authorization header in the request. Replace `<your_token>` with the JWT token obtained in Step 3:
 
 **GET** http://localhost:3000/me<br/>
 **Headers:**

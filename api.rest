@@ -7,7 +7,15 @@ content-type: application/json
   "password": "superSecretPass"
 }
 
+### Request refresh token
+POST http://localhost:3000/auth/refresh-token
+content-type: application/json
+
+{
+  "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCdWRpaGFydGEiLCJlbWFpbCI6ImJ1ZGloYXJ0YV8yMUBsaXZlLmNvbSIsImlhdCI6MTcwNTc1OTAxMywiZXhwIjoxNzA4MzUxMDEzfQ.WQyHGOy_u1zBKD29Rti1yiI5unpDWWm1Z1fstG9kjqg"
+}
+
+
 ### Get user
 GET http://localhost:3000/me
-content-type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCdWRpaGFydGEiLCJlbWFpbCI6ImJ1ZGloYXJ0YV8yMUBsaXZlLmNvbSIsImlhdCI6MTcwNTc1NTE4N30.VtJYjjeiA0EXvnfwHy4yzL8svW4x3L_BtXYwjyupAF8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCdWRpaGFydGEiLCJlbWFpbCI6ImJ1ZGloYXJ0YV8yMUBsaXZlLmNvbSIsImlhdCI6MTcwNTc1OTE3NCwiZXhwIjoxNzA1NzU5MjM0fQ.HA_KW6rrixEXNoCsu1Wec5eiKtoY-Uv_XtQEgRG1FCY

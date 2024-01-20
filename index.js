@@ -3,12 +3,15 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+
 const { signIn } = require("./services/auth");
 const { encode, decode } = require("./utils/jwt");
 const { getUserById } = require("./services/users");
 const authorization = require("./middleware/authorization");
 
 const port = process.env.PORT || 3000;
+
+const refreshTokens = [];
 
 app.use(bodyParser.json());
 
@@ -32,9 +35,54 @@ app.post("/auth/sign-in", (req, res) => {
     email: user.email,
   };
 
-  const token = encode(payload, process.env.JWT_SECRET);
+  const accessToken = encode(payload, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "1m",
+  });
+  const refreshToken = encode(payload, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: "30d",
+  });
 
-  return res.send({ success: true, jtw: token });
+  refreshTokens.push(refreshToken);
+
+  return res.send({
+    success: true,
+    access_token: accessToken,
+    refresh_token: refreshToken,
+  });
+});
+
+app.post("/auth/refresh-token", (req, res) => {
+  const { refresh_token: refreshToken } = req.body;
+
+  if (!refreshToken) {
+    return res.status(403).send({ error: "Token not valid" });
+  }
+
+  if (!refreshTokens.includes(refreshToken)) {
+    return res.status(403).send({ error: "Token not valid" });
+  }
+
+  let decoded;
+  try {
+    decoded = decode(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+  } catch (error) {
+    return res.status(403).send({ error: "Token not valid" });
+  }
+
+  const payload = {
+    id: decoded.id,
+    username: decoded.username,
+    email: decoded.email,
+  };
+
+  const accessToken = encode(payload, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "1m",
+  });
+
+  return res.send({
+    success: true,
+    access_token: accessToken,
+  });
 });
 
 // Private routes

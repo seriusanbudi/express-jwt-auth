@@ -15,7 +15,7 @@ function authorization(req, res, next) {
 
   let decoded;
   try {
-    decoded = decode(token, process.env.JWT_SECRET);
+    decoded = decode(token, process.env.ACCESS_TOKEN_SECRET);
   } catch (error) {
     return res.status(403).send({ error: "Token not valid" });
   }
