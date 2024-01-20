@@ -8,7 +8,7 @@ const { encode, decode } = require("./utils/jwt");
 const { getUserById } = require("./services/users");
 const authorization = require("./middleware/authorization");
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
