@@ -12,6 +12,7 @@ const port = 3000;
 
 app.use(bodyParser.json());
 
+// Public routes
 app.get("/", (req, res) => {
   res.send({ success: true });
 });
@@ -31,13 +32,12 @@ app.post("/auth/sign-in", (req, res) => {
     email: user.email,
   };
 
-  console.log(process.env.JWT_SECRET);
-
   const token = encode(payload, process.env.JWT_SECRET);
 
   return res.send({ success: true, jtw: token });
 });
 
+// Private routes
 app.get("/me", authorization, (req, res) => {
   const userId = req.user.id;
   const user = getUserById(userId);
