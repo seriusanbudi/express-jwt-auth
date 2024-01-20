@@ -1,0 +1,13 @@
+### Login
+POST http://localhost:3000/auth/sign-in
+content-type: application/json
+
+{
+  "email": "budiharta_21@live.com",
+  "password": "superSecretPass"
+}
+
+### Get user
+GET http://localhost:3000/me
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJCdWRpaGFydGEiLCJlbWFpbCI6ImJ1ZGloYXJ0YV8yMUBsaXZlLmNvbSIsImlhdCI6MTcwNTc1NTE4N30.VtJYjjeiA0EXvnfwHy4yzL8svW4x3L_BtXYwjyupAF8

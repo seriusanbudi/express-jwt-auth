@@ -1,11 +1,14 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
-const users = require("./db");
-const jwt = require("jsonwebtoken");
+const { signIn } = require("./services/auth");
+const { encode, decode } = require("./utils/jwt");
+const { getUserById } = require("./services/users");
+const authorization = require("./middleware/authorization");
 
 const port = 3000;
-const secret = "SUPER_SECRET_TEXT";
 
 app.use(bodyParser.json());
 
@@ -20,16 +23,7 @@ app.post("/auth/sign-in", (req, res) => {
     return res.status(422).send({ error: "Email or password is empty" });
   }
 
-  const user = users.find((user) => user.email === email);
-  if (!user) {
-    return res.status(403).send({ error: "No user found" });
-  }
-
-  if (user.password !== password) {
-    return res
-      .status(403)
-      .send({ error: "Email and password combination error" });
-  }
+  const user = signIn(email, password);
 
   const payload = {
     id: user.id,
@@ -37,26 +31,16 @@ app.post("/auth/sign-in", (req, res) => {
     email: user.email,
   };
 
-  const token = jwt.sign(payload, secret);
+  console.log(process.env.JWT_SECRET);
+
+  const token = encode(payload, process.env.JWT_SECRET);
 
   return res.send({ success: true, jtw: token });
 });
 
-app.get("/me", (req, res) => {
-  const { authorization = null } = req.headers;
-
-  if (!authorization) {
-    return res.status(403).send({ error: "No authorization header found" });
-  }
-
-  const token = authorization.split(" ")[1] ?? null;
-
-  if (!token) {
-    return res.status(403).send({ error: "Token not valid" });
-  }
-
-  const decoded = jwt.verify(token, secret);
-  const user = users.find((user) => user.id === decoded.id);
+app.get("/me", authorization, (req, res) => {
+  const userId = req.user.id;
+  const user = getUserById(userId);
 
   res.send({
     id: user.id,
