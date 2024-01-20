@@ -97,6 +97,21 @@ app.get("/me", authorization, (req, res) => {
   });
 });
 
+app.post("/auth/sign-out", authorization, (req, res) => {
+  const { refresh_token: refreshToken } = req.body;
+
+  if (!refreshToken) {
+    return res.status(403).send({ error: "Token not valid" });
+  }
+
+  const index = refreshTokens.indexOf(refreshToken);
+  if (index !== -1) {
+    refreshTokens.splice(index, 1);
+  }
+
+  return res.send({ success: true });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
